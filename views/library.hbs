@@ -1,0 +1,25 @@
+<style>
+    li {
+        height: 70px;
+        width: 250px;
+        margin-bottom: 20px;
+    }
+
+    .title {
+        font-weight: bold;
+    }
+
+    .author {
+        font-style: italic;
+    }
+</style>
+
+<h1>{{typeOf}} Inventory ({{count}})</h1>
+
+<ul>
+{{#each book}}
+    <li id={{_id}}>
+        <span class='title'>{{title}}</span>, <span class='author'>{{author}}</span>
+    </li>
+{{/each}}
+</ul>
