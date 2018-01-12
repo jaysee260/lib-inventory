@@ -20,10 +20,16 @@ router.get('/library', (req, res) => {
     })
 });
 
+// Render search engine
+router.get('/library/find', (req, res) => {
+    res.render('search');
+});
+
 // Find book by Author, Title, or ISBN
 router.get('/library/find/:criteria', function(req, res) {
     // Make case insensitive
-    let search = new RegExp(req.params.criteria, 'i');
+    let param = decodeURIComponent(req.params.criteria);
+    let search = new RegExp(param, 'i');
     Book.find({$or: [{title: search}, {author: search}, {isbn: search}]}, function(err, result) {
         if (err) res.send(err);
         res.send(result);

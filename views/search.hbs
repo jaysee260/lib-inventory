@@ -1,0 +1,47 @@
+<style>
+    input {
+        width: 350px;
+        height: 25px;
+        font-size: 1em;
+        padding: 5px;
+        border: 2px solid rgb(102, 102, 233);
+        border-radius: 5px;
+        box-shadow: 1px 1px 1px gray;
+
+    }
+
+    input:focus {
+        outline: none;
+    }
+
+    .btn {
+        display: inline-block;
+        height: 22px;
+        margin: 10px;
+        padding: 4px;
+        border: 2px solid #000;
+        border-radius: 5px;
+        user-select: none; /* cannot be highlighted */
+        cursor: pointer;
+    }
+</style>
+
+<h1>Find Books in the Inventory</h1>
+
+<h4>You can search by book Title, Author, or ISBN</h4>
+<input id='search_value' type="text">
+<div class="btn" onclick='searchBook()'>Search</div>
+
+<script>
+    function searchBook() {
+        let search_value = document.getElementById('search_value').value;
+        if (search_value === '')
+            alert('Cannot search for an empty string');
+        let encodedValue = encodeURIComponent(search_value);
+        axios.get(`/library/find/${encodedValue}`)
+        .then(function(res) {
+            console.log(res.data);
+        })
+
+    }
+</script>
