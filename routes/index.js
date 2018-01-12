@@ -60,7 +60,7 @@ router.delete('/library/remove/:_id', function(req, res) {
     let _id = req.params._id;
     Book.findByIdAndRemove(_id, function(err, status) {
         if (err) res.send(err);
-        res.send(status);
+        res.redirect(200, `${req.baseUrl}/library`);
     });
 });
 
