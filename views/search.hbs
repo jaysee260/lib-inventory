@@ -4,9 +4,9 @@
         height: 25px;
         font-size: 1em;
         padding: 5px;
-        border: 2px solid rgb(102, 102, 233);
-        border-radius: 5px;
-        box-shadow: 1px 1px 1px gray;
+        border: 2px solid #ccc;
+        {{!-- border-radius: 5px; --}}
+        {{!-- box-shadow: 1px 1px 1px gray; --}}
 
     }
 
@@ -20,28 +20,94 @@
         margin: 10px;
         padding: 4px;
         border: 2px solid #000;
-        border-radius: 5px;
+        {{!-- border-radius: 5px; --}}
         user-select: none; /* cannot be highlighted */
         cursor: pointer;
     }
+
+     li {
+        height: 70px;
+        width: 250px;
+        margin-bottom: 20px;
+        line-height: 25px;
+    }
+    
+    .title {font-weight: bold;}
+    .author {font-style: italic;}
 </style>
 
 <h1>Find Books in the Inventory</h1>
 
-<h4>You can search by book Title, Author, or ISBN</h4>
+<h4>You can search books by Title, Author, ISBN, or keyword</h4>
 <input id='search_value' type="text">
 <div class="btn" onclick='searchBook()'>Search</div>
 
+<div id="results">
+    <ul></ul>
+</div>
+
 <script>
-    function searchBook() {
+    var d = document;
+    /* Attach global event listener so that user can trigger
+        search by hitting 'Enter' key
+    */
+    d.addEventListener('keyup', function(e) {
+        if (e.keyCode == 13)
+            searchBook();
+    });
+    var results_div = d.getElementById('results').firstElementChild;
+
+    function searchBook() {searchBook: {
+        // Capture input string
         let search_value = document.getElementById('search_value').value;
-        if (search_value === '')
+        // Check for empty string
+        if (search_value === '') {
             alert('Cannot search for an empty string');
+            break searchBook; // abort mission!
+        }
+        // Encode search parameter
         let encodedValue = encodeURIComponent(search_value);
+        // Search in library and display result(s)
         axios.get(`/library/find/${encodedValue}`)
         .then(function(res) {
-            console.log(res.data);
+            appendResults(d, res.data);
         })
+    }}
 
+    function appendResults(d, res) {
+        // Clear input field on every new search
+        if (results_div.innerHTML.length !== 0)
+            results_div.innerHTML = '';
+         /* 
+            If there's not more than one book, just render one li.
+            If there's more than one, render as many as needed.
+        */
+         if (!(res.length > 1)) {
+            let item = renderItem(res[0])
+            results_div.appendChild(item);
+         } else {
+                res.forEach(function(element) {
+                    let item = renderItem(element);
+                    results_div.append(item);
+                })
+         }
+    }
+
+    /*
+        Returns the following HTML with injected values:
+        <li id='_id-value'>
+            <span class='title'>'Title ,'</span>
+            <span class='author'> Author'</span>
+        </li>
+    */
+    function renderItem(data) {
+        let title, author, item = d.createElement('li');
+        title = d.createElement('span'); title.setAttribute('class', 'title');
+        author = d.createElement('span'); author.setAttribute('class', 'author');
+        title.appendChild(d.createTextNode(`${data.title}, `));
+        author.appendChild(d.createTextNode(data.author));
+        item.appendChild(title); item.appendChild(author);
+        item.setAttribute('id', data._id);
+        return item;
     }
 </script>

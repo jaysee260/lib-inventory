@@ -5,8 +5,38 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
     <title>Library</title>
+    <style>
+        body {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 10px;
+            font-family: Arial, Helvetica, sans-serif;
+        }
+
+        nav {
+            height: 25px;
+            font-family: 'Times New Roman', Times, serif;
+        }
+
+        a.link {
+            margin: .5em;
+            font-size: 1.5em;
+            text-decoration: none;
+            color: blue;
+        }
+
+        a.link:hover {
+            border-bottom: 3px solid blue;
+        }
+    </style>
 </head>
 <body>
+    <nav>
+        <a class='link' href="/library">Home</a>
+        <a class='link' href="/library/find">Find</a>
+    </nav>
+    <hr>
+
     {{{ body }}}
 
     <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
