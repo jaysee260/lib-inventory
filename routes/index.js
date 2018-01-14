@@ -9,7 +9,7 @@ router.get('/', (req, res) => {
 });
 
 // Get all books
-router.get('/library', (req, res) => {
+router.get('/library/home', (req, res) => {
     Book.find({}, function(err, books) {
         if (err) res.send(err);
         res.render('library', {

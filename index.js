@@ -13,6 +13,7 @@ var routes = require('./routes/index'); // bring in routes
 const PORT = process.env.PORT;
 const db_connection = process.env.MONGO_CONNECTION;
 
+app.use(express.static(path.join(__dirname, 'views'))); // allows for serving of static files like stylesheets
 app.use(bodyParser.json()); // set up express to use body-parser
 app.use(bodyParser.urlencoded({extended: true}));
 

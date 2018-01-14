@@ -1,0 +1,21 @@
+li {
+    height: 70px;
+    width: 250px;
+    margin-bottom: 20px;
+    line-height: 25px;
+}
+
+.title {
+    font-weight: bold;
+}
+
+.author {
+    font-style: italic;
+}
+
+.remove {
+    border: 1px solid black;
+    border-radius: 6px;
+    padding: 1px;
+    cursor: pointer;
+}

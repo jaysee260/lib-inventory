@@ -1,0 +1,32 @@
+input {
+    width: 350px;
+    height: 25px;
+    font-size: 1em;
+    padding: 5px;
+    border: 2px solid #ccc;
+
+}
+
+input:focus {
+    outline: none;
+}
+
+.btn {
+    display: inline-block;
+    height: 22px;
+    margin: 10px;
+    padding: 4px;
+    border: 2px solid #000;
+    user-select: none; /* cannot be highlighted */
+    cursor: pointer;
+}
+
+li {
+    height: 70px;
+    width: 250px;
+    margin-bottom: 20px;
+    line-height: 25px;
+}
+
+.title {font-weight: bold;}
+.author {font-style: italic;}
