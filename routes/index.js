@@ -49,7 +49,9 @@ router.post('/library/add', (req, res) => {
     if (!_.isEmpty(book)) {
         Book.create(book, function(err, response) {
             if (err) res.send({error:`${err.message}`});
-        }).then(() => res.redirect(200, `${req.baseUrl}/library/add`));
+        }).then(() => {
+            res.json({success: 'Book added!'});
+        });
     }
 });
 

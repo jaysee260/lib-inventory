@@ -16,7 +16,7 @@ var bookSchema = new Schema({
     },
     genre: String,
     publisher: String,
-    year_published: Date,
+    year_published: String,
     pages: String
 }, {versionKey: false});
 

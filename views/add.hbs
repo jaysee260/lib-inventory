@@ -64,10 +64,10 @@
             if (book[property] === null)
                 delete book[property];
         }
-
+        
         axios.post('/library/add', book)
         .then(function(response) {
-            //console.log(response);
+            // console.log(response);
             // Show alert
             document.querySelector('.alert').style.display = 'block';
             // Hide alert after 3 seconds
