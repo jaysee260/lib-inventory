@@ -1,7 +1,7 @@
 li.home {
-    height: 70px;
+    min-height: 50px;
     width: 265px;
-    margin-bottom: 20px;
+    margin-bottom: 25px;
     line-height: 25px;
 }
 
