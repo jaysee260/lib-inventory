@@ -1,4 +1,4 @@
-input {
+input#search_value {
     width: 350px;
     height: 25px;
     font-size: 1em;
@@ -7,21 +7,24 @@ input {
 
 }
 
-input:focus {
+input#search_value:focus {
     outline: none;
+    background-color: #555;
+    color: #fff;
 }
 
 .btn {
     display: inline-block;
-    height: 22px;
-    margin: 10px;
-    padding: 4px;
+    margin-left: 10px;
+    padding: 8px;
     border: 2px solid #000;
     user-select: none; /* cannot be highlighted */
     cursor: pointer;
 }
 
-li {
+/* .btn:active {background-color: rgb(247, 210, 0);} */
+
+li.result {
     height: 70px;
     width: 250px;
     margin-bottom: 20px;

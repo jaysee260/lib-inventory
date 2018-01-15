@@ -1,0 +1,89 @@
+<h1>Add Books Here</h1>
+
+<form method="post" action="#" id="new-book-form">
+    <div class="header">
+        <h3>New Book Form</h3>
+    </div>
+    <hr>
+    <section class="data">
+        <div class="alert">Book Added!</div>
+        <p>
+            <label for="title">Title</label>
+            <input type="text" name="title" id="title" required>
+        </p>
+        <p>
+            <label for="author">Author</label>
+            <input type="text" name="author" id="author" required>
+        </p>
+        <p>
+            <label for="isbn">ISBN</label>
+            <input type="text" name="isbn" id="isbn" required>
+        </p>
+        <p>
+            <label for="genre">Genre</label>
+            <input type="text" name="genre" id="genre">
+        </p>
+        <p>
+            <label for="publisher">Publisher</label>
+            <input type="text" name="publisher" id="publisher">
+        </p>
+        <p>
+            <label for="year-published">Year Published</label>
+            <input type="text" name="year-published" id="year-published">
+        </p>
+        <p>
+            <label for="pages">Pages</label>
+            <input type="text" name="pages" id="pages">
+        </p>
+        <p>
+            <button class="submit">Submit</button>
+        </p>
+    </section>
+</form>
+
+<script>
+    var newBookForm = document.getElementById('new-book-form');
+    // Listen for submit
+    newBookForm.addEventListener('submit', submitForm);
+
+    function submitForm(e) {
+        e.preventDefault();
+        // Get Values
+        var book = {
+            title: getInputVal('title'),
+            author: getInputVal('author'),
+            isbn: getInputVal('isbn'),
+            genre: getInputVal('genre') || null,
+            publisher: getInputVal('publisher') || null,
+            year_published: getInputVal('year-published') || null,
+            pages: getInputVal('pages') || null
+        };
+
+        // Used to 'clean' object of null fields
+        for (property in book) {
+            if (book[property] === null)
+                delete book[property];
+        }
+
+        axios.post('/library/add', book)
+        .then(function(response) {
+            //console.log(response);
+            // Show alert
+            document.querySelector('.alert').style.display = 'block';
+            // Hide alert after 3 seconds
+            setTimeout(function(){
+                document.querySelector('.alert').style.display = 'none';
+            }, 3000);
+            // Clear form
+            document.getElementById('new-book-form').reset();
+        })
+        .catch(function(error) {
+            console.log(error);
+        });
+    }
+
+    // Captures form values
+    function getInputVal(id) {
+        return document.getElementById(id).value;
+    }
+</script>

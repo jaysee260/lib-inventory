@@ -9,7 +9,7 @@ router.get('/', (req, res) => {
 });
 
 // Get all books
-router.get('/library/home', (req, res) => {
+router.get('/library', (req, res) => {
     Book.find({}, function(err, books) {
         if (err) res.send(err);
         res.render('library', {
@@ -36,13 +36,20 @@ router.get('/library/find/:criteria', function(req, res) {
     });
 });
 
-// Add a book
+// GET - Render template with form to add book
+router.get('/library/add', (req, res) => {
+    res.render('add');
+});
+
+// POST - Add a book
 router.post('/library/add', (req, res) => {
     let book = req.body;
+    console.log(book);
+    // res.send('book received!');
     if (!_.isEmpty(book)) {
         Book.create(book, function(err, response) {
-            if (err) res.send(`${err.message}`);
-        }).then(() => res.redirect(200, `${req.baseUrl}/library`));
+            if (err) res.send({error:`${err.message}`});
+        }).then(() => res.redirect(200, `${req.baseUrl}/library/add`));
     }
 });
 

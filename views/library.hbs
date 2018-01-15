@@ -2,9 +2,9 @@
 
 <ul>
 {{#each book}}
-    <li id={{_id}}>
+    <li id={{_id}} class='home'>
         <span class='title'>{{title}}</span>, <span class='author'>{{author}}</span>
-        <span class='remove' onclick='removeBook(this.parentElement.id)'>X</span>
+        <span class='remove' onclick='removeBook(this.parentElement.id)'>x</span>
     </li>
 {{/each}}
 </ul>
