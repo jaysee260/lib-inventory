@@ -14,7 +14,9 @@ var bookSchema = new Schema({
         type: String,
         required: [true, 'Book ISBN is required']
     },
-    genre: String,
+    genres: [{
+        type: String
+    }],
     publisher: String,
     year_published: String,
     pages: String
