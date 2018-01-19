@@ -1,5 +1,5 @@
 <h1>Add Books Here</h1>
-
+{{shelf_codes}}
 <form method="post" action="#" id="new-book-form">
     <div class="header">
         <h3>New Book Form</h3>
@@ -27,6 +27,32 @@
             <span class="disclaimer">
                 You may add one or more <br><strong>comma separated</strong> tags
                 </span>
+        </p>
+         <p>
+            <label for="language">Language</label>
+            <select form="new-book-form" name="language" id="language">
+                {{#each languages}}
+                    <option value={{this}}>{{this}}</option>
+                {{/each}}
+            </select>
+        </p>
+        <p>
+            <label for="shelf">Shelf</label>
+            {{!-- So proud of these 10 lines of code and how they're
+            made possible from the back-end... Just beautiful... This 
+            could have been AT LEAST 50 lines of static HTML--}}
+            <select form="new-book-form" name="shelf" id="shelf">
+                <optgroup label={{computer_room.label}}>
+                    {{#each computer_room.values}}
+                        <option value={{this}}>{{this}}</option>
+                    {{/each}}
+                </optgroup>
+                <optgroup label={{living_room.label}}>
+                    {{#each living_room.values}}
+                        <option value={{this}}>{{this}}</option>
+                    {{/each}}
+                </optgroup>
+            </select>
         </p>
         <p>
             <label for="publisher">Publisher</label>
@@ -62,6 +88,8 @@
             author: getInputVal('author'),
             isbn: getInputVal('isbn'),
             genres: getInputVal('genres') || null,
+            language: getInputVal('language'),
+            shelf: getInputVal('shelf') || null,
             publisher: getInputVal('publisher') || null,
             year_published: getInputVal('year-published') || null,
             pages: getInputVal('pages') || null
@@ -102,4 +130,17 @@
     // Run regex on GENRES input string to capture genre tags
     // .match(/[^,\s?]+/g)
     // .match(/(\w\s?)+/g) THIS works better
-</script> 
+</script>
+
+<script>
+    var shelves = document.getElementById('shelf');
+    // disable the selection of al breakers '---' in the list
+    for(var i = 0; i < shelves.length; i++) {
+        if(shelves[i].value === '') {
+            // set selection to the first breaker in the list
+            shelves[i].setAttribute('selected', 'selected');
+            break;
+            {{!-- shelves[i].disabled = true; --}}
+        }
+    }
+</script>

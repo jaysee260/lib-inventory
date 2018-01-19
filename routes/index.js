@@ -2,6 +2,8 @@
 var express = require('express');
 var router = express.Router();
 var _ = require('lodash');
+var shelf_codes = require('../views/data/shelf-codes');
+var languages = require('../views/data/languages');
 var Book = require('.././models/book'); // bring in Book Schema
 
 router.get('/', (req, res) => {
@@ -38,14 +40,23 @@ router.get('/library/find/:criteria', function(req, res) {
 
 // GET - Render template with form to add book
 router.get('/library/add', (req, res) => {
-    res.render('add');
+    res.render('add', {
+        computer_room: {
+            label: shelf_codes.computer_room.label,
+            values: shelf_codes.computer_room.values
+        },
+        living_room: {
+            label: shelf_codes.living_room.label,
+            values: shelf_codes.living_room.values
+        },
+        languages: languages.options
+    });
 });
 
 // POST - Add a book
 router.post('/library/add', (req, res) => {
     let book = req.body;
     console.log(book);
-    // res.send('book received!');
     if (!_.isEmpty(book)) {
         Book.create(book, function(err, response) {
             if (err) res.send({error:`${err.message}`});

@@ -16,15 +16,19 @@ var bookSchema = new Schema({
     genres: [{
         type: String
     }],
+    language: {
+        type: String,
+        default: "English"
+    },
+    shelf: {
+        type: String,
+        default: null
+    },
     publisher: String,
     year_published: String,
     pages: String
 }, {versionKey: false});
 
 var Book = mongoose.model('Book', bookSchema);
-
-bookSchema.methods.add = function (cb) {
-
-}
 
 module.exports = Book;
