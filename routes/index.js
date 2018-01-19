@@ -79,4 +79,13 @@ router.delete('/library/remove/:_id', function(req, res) {
     });
 });
 
+// Render single page for book item
+router.get('/library/book/:_id', function(req, res) {
+    let _id = req.params._id;
+    Book.findById(_id, function(err, result) {
+        if (err) res.send(err);
+        res.render('book', {book: result});
+    });
+});
+
 module.exports = router;

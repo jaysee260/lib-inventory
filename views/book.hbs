@@ -1,3 +1,174 @@
 {{!-- In this single page template, more detailed information about each book
 will be displayed. Also, in this page, the user will have the ability to
 edit fields and/or remove a book from the inventory --}}
+<style>
+    h2.title {
+        margin: 0;
+        padding: 3px;
+        font-size: 25px;
+    }
+
+    h4.author {
+        margin: 0;
+        padding: 3px;
+        font-style: italic;
+        font-size: 20px;
+    }
+
+    form#edit-book {
+        box-shadow: 0 0 20px 0 rgba(72,94,116,0.7);
+        width: 500px;
+        padding: 15px;
+        margin: 15px;
+        font-size: 1.10em;
+        position: relative;
+    }
+
+    form#edit-book button.edit {
+        position: absolute;
+        top: 0;
+        right: 0px;
+        margin: 15px;
+        border: 1px solid #333;
+        padding: 5px 15px;
+        background: #eee;
+        border-radius: 5px;
+        outline: none;
+    }
+
+    form#edit-book .property {
+        margin: 0;
+        padding: 20px;
+    }
+
+    form#edit-book .property label {
+        font-weight: bold;
+    }
+
+    form#edit-book .property input {
+        float: right;
+        width: 220px;
+        padding: 5px;
+    }
+
+    .hidden {
+        visibility: hidden;
+    }
+
+    .form-body {
+        padding: 30px 40px 0 20px;
+    }
+
+    form#edit-book button.done {
+        width: 100%;
+        padding: .5em;
+        border: 0;
+        background-color: rgb(15, 194, 69);
+        font-size: 1em;
+        font-family: Courier New, Courier, monospace;
+        font-weight: bold;
+        box-shadow: 0 5px #999;
+        border-radius: 3px;
+        user-select: none;
+        transition: all .2s ease;
+        position: relative;
+    }
+</style>
+
+<h2 class="title">{{book.title}}</h2>
+<h4 class="author">by {{book.author}}</h4>
+
+<form id="edit-book">
+    <button class='edit active' onclick='getFocus(event)'>Edit</button>
+    <div class="form-body">
+        <div class="property">
+            <label for="title">Title</label>
+            <input id="title" type="text" value="{{book.title}}" disabled>
+        </div>
+        <div class="property">
+            <label for="author">Author</label>
+            <input id="author" type="text" value="{{book.author}}" disabled>
+        </div>
+        <div class="property">
+            <label for="isbn">ISBN</label>
+            <input id="isbn" type="text" value="{{book.isbn}}" disabled>
+        </div>
+        <div class="property">
+            <label for="genres">Genre(s)</label>
+            <input id="genres" type="text" value="{{book.genres}}" disabled>
+        </div>
+        <div class="property">
+            <label for="publisher">Publisher</label>
+            <input id="publisher" type="text"value="{{book.publisher}}" disabled>
+        </div>
+        <div class="property">
+            <label for="year_published">Year Published</label>
+            <input id="year_published" type="text" value="{{book.year_published}}" disabled>
+        </div>
+        <div class="property">
+            <label for="pages">Pages</label>
+            <input id="pages" type="text" value="{{book.pages}}" disabled>
+        </div>
+        <button class="done hidden">Apply Changes</button>
+    </div>
+</form>
+
+<script>
+    var editsForm = document.getElementById('edit-book');
+    editsForm.addEventListener('submit', submitChanges);
+
+    var editing = false;
+    // maybe for later use onblur="disable(event)"
+    function disable(event) {
+        document.getElementById(event.target.id).disabled = true;
+    }
+    function getFocus(event) {
+        event.preventDefault();
+        let fields = document.getElementsByTagName('input');
+        if (editing == false) {
+            editing = true;
+            document.querySelector('.done').classList.remove('hidden');
+            for(var i = 0; i < fields.length; i++) {
+                fields[i].disabled = false;
+            }
+        } else {
+            editing = false;
+            document.querySelector('.done').classList.add('hidden');
+            for(var i = 0; i < fields.length; i++) {
+                fields[i].disabled = true;
+            }
+        }
+    }
+
+    function submitChanges(e) {
+        e.preventDefault();
+        let _id = window.location.pathname.split('/book/')[1];
+        var book = {
+            title: getInputVal('title'),
+            author: getInputVal('author'),
+            isbn: getInputVal('isbn'),
+            genres: getInputVal('genres') || null,
+            publisher: getInputVal('publisher') || null,
+            year_published: getInputVal('year_published') || null,
+            pages: getInputVal('pages') || null
+        };
+
+        if(confirm('Are you sure you want to apply these changes?')) {
+            axios.put(`/library/update/${_id}`, book)
+            .then(function(response) {
+                console.log(response);
+                window.location.reload();
+            })
+            .catch(function(error) {
+                console.log(error);
+            })
+        }
+    }
+
+     // Captures form values
+    function getInputVal(id) {
+        return ! (id === 'genres') ?
+            document.getElementById(id).value :
+            document.getElementById(id).value.match(/(\w\s?)+/g);
+    }
+</script>

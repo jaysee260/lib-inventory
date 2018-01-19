@@ -2,7 +2,7 @@
 
 <ul>
 {{#each book}}
-    <li id={{_id}} class='home'>
+    <li id={{_id}} class='home' onclick='redirect(this.id)'>
         <span class='title'>{{title}}</span>, <span class='author'>{{author}}</span>
         <span class='remove' onclick='removeBook(this.parentElement.id)'>x</span>
     </li>
@@ -22,5 +22,9 @@
             }
         } 
         
+    }
+
+    function redirect(_id) {
+        window.location.href += `/book/${_id}`;
     }
 </script>

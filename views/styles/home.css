@@ -3,6 +3,16 @@ li.home {
     width: 265px;
     margin-bottom: 25px;
     line-height: 25px;
+    padding: 10px;
+    border-radius: 5px;
+}
+
+li.home:hover {
+    background-color: rgb(243, 239, 239);
+}
+
+li.home:active {
+    background-color: rgb(218, 213, 213);
 }
 
 .title {
