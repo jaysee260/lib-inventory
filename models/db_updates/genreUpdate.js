@@ -5,7 +5,7 @@
     thus allowing for the assignment of more than one genre
     to a book.
 
-    This script make that modification to all documents in
+    This script made that modification to all documents in
     the database which were inserted under the previous
     Schema design.
 */
