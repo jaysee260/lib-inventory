@@ -95,7 +95,22 @@ router.get('/library/book/:_id', function(req, res) {
     let _id = req.params._id;
     Book.findById(_id, function(err, result) {
         if (err) res.send(err);
-        res.render('book', {book: result});
+        console.log(result);
+        res.render('book', {
+            book: result,
+            shelf_codes : {
+                computer_room: {
+                    label: shelf_codes.computer_room.label,
+                    values: shelf_codes.computer_room.values
+                },
+                living_room: {
+                    label: shelf_codes.living_room.label,
+                    values: shelf_codes.living_room.values
+                }
+            },
+            languages: languages.options
+
+        });
     });
 });
 

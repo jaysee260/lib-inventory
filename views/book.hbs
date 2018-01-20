@@ -51,6 +51,14 @@ edit fields and/or remove a book from the inventory --}}
         padding: 5px;
     }
 
+    form#edit-book select {
+    float: right;
+    height: 30px;
+    width: 234px;
+    padding: 5px;
+    background-color: #eee;
+}
+
     .hidden {
         visibility: hidden;
     }
@@ -70,7 +78,7 @@ edit fields and/or remove a book from the inventory --}}
         box-shadow: 0 5px #999;
         border-radius: 3px;
         user-select: none;
-        transition: all .2s ease;
+        /*transition: all .2s ease;*/
         position: relative;
     }
 </style>
@@ -98,6 +106,35 @@ edit fields and/or remove a book from the inventory --}}
             <input id="genres" type="text" value="{{book.genres}}" disabled>
         </div>
         <div class="property">
+            <label for="language">Language</label>
+            <select name="language" id="language" disabled>
+                <optgroup label="Language-Selected">
+                    <option value={{book.language}} selected>{{book.language}}</option>
+                </optgroup>
+                {{#each languages}}
+                    <option value="{{this}}">{{this}}</option>
+                {{/each}}
+            </select>
+        </div>
+        <div class="property">
+            <label for="shelf">Shelf</label>
+            <select name="shelf" id="shelf" disabled>
+                <optgroup label="Current-Location">
+                    <option value={{book.shelf}} selected>{{book.shelf}}</option>
+                </optgroup>
+                <optgroup label={{shelf_codes.computer_room.label}}>
+                    {{#each shelf_codes.computer_room.values}}
+                        <option value={{this}}>{{this}}</option>
+                    {{/each}}
+                </optgroup>
+                <optgroup label={{shelf_codes.living_room.label}}>
+                    {{#each shelf_codes.living_room.values}}
+                        <option value={{this}}>{{this}}</option>
+                    {{/each}}
+                </optgroup>
+            </select>
+        </div>
+        <div class="property">
             <label for="publisher">Publisher</label>
             <input id="publisher" type="text"value="{{book.publisher}}" disabled>
         </div>
@@ -118,22 +155,26 @@ edit fields and/or remove a book from the inventory --}}
     editsForm.addEventListener('submit', submitChanges);
 
     var editing = false;
-    // maybe for later use onblur="disable(event)"
     function disable(event) {
         document.getElementById(event.target.id).disabled = true;
     }
+
     function getFocus(event) {
         event.preventDefault();
         let fields = document.getElementsByTagName('input');
         if (editing == false) {
             editing = true;
             document.querySelector('.done').classList.remove('hidden');
+            document.getElementById('language').disabled = false;
+            document.getElementById('shelf').disabled = false;
             for(var i = 0; i < fields.length; i++) {
                 fields[i].disabled = false;
             }
         } else {
             editing = false;
             document.querySelector('.done').classList.add('hidden');
+            document.getElementById('language').disabled = true;
+            document.getElementById('shelf').disabled = true;
             for(var i = 0; i < fields.length; i++) {
                 fields[i].disabled = true;
             }
@@ -148,10 +189,18 @@ edit fields and/or remove a book from the inventory --}}
             author: getInputVal('author'),
             isbn: getInputVal('isbn'),
             genres: getInputVal('genres') || null,
+            language: getInputVal('language'),
+            shelf: getInputVal('shelf') || null,
             publisher: getInputVal('publisher') || null,
             year_published: getInputVal('year_published') || null,
             pages: getInputVal('pages') || null
         };
+
+        // Used to 'clean' object of null fields
+        for (property in book) {
+            if (book[property] === null)
+                delete book[property];
+        }
 
         if(confirm('Are you sure you want to apply these changes?')) {
             axios.put(`/library/update/${_id}`, book)
