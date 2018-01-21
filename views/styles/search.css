@@ -25,10 +25,20 @@ input#search_value:focus {
 /* .btn:active {background-color: rgb(247, 210, 0);} */
 
 li.result {
-    height: 70px;
+    max-height: 8em;
     width: 250px;
     margin-bottom: 20px;
     line-height: 25px;
+    padding: 10px;
+    border-radius: 5px;
+}
+
+li.result:hover {
+    background-color: rgb(243, 239, 239);
+}
+
+li.result:active {
+    background-color: rgb(218, 213, 213);
 }
 
 .title {font-weight: bold;}

@@ -71,6 +71,11 @@
         item.appendChild(title); item.appendChild(author);
         item.setAttribute('id', data._id);
         item.setAttribute('class', 'result');
+        item.addEventListener('click', function() { redirect(data._id) });
         return item;
+    }
+
+    function redirect(_id) {
+        window.location = `book/${_id}`;
     }
 </script>

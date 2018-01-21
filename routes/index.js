@@ -32,9 +32,14 @@ router.get('/library/find/:criteria', function(req, res) {
     // Make case insensitive
     let param = decodeURIComponent(req.params.criteria);
     let search = new RegExp(param, 'i');
-    Book.find({$or: [{title: search}, {author: search}, {isbn: search}]}, function(err, result) {
-        if (err) res.send(err);
-        res.send(result);
+    Book.find({ $or: [
+            { title: search },
+            { author: search },
+            { isbn: search }
+        ]},
+        function(err, result) {
+            if (err) res.send(err);
+            res.send(result);
     });
 });
 
@@ -86,7 +91,7 @@ router.delete('/library/remove/:_id', function(req, res) {
     let _id = req.params._id;
     Book.findByIdAndRemove(_id, function(err, status) {
         if (err) res.send(err);
-        res.redirect(200, `${req.baseUrl}/library`);
+        res.send({success: "Book removed"});
     });
 });
 
@@ -95,7 +100,6 @@ router.get('/library/book/:_id', function(req, res) {
     let _id = req.params._id;
     Book.findById(_id, function(err, result) {
         if (err) res.send(err);
-        console.log(result);
         res.render('book', {
             book: result,
             shelf_codes : {
